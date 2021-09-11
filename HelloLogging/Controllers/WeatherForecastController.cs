@@ -53,6 +53,7 @@ namespace HelloLogging.Controllers
         public void Post(WeatherForecast weather)
         {
             _logger.LogInformation("We received " + JsonConvert.SerializeObject(weather));
+            _logger.LogInformation("We received {@weather}", weather);
         }
     }
 }

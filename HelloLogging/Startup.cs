@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using HelloLogging.Data;
+using Serilog;
 
 namespace HelloLogging
 {
@@ -45,6 +46,8 @@ namespace HelloLogging
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSerilogRequestLogging();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
