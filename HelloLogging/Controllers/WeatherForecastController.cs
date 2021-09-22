@@ -55,5 +55,18 @@ namespace HelloLogging.Controllers
             _logger.LogInformation("We received " + JsonConvert.SerializeObject(weather));
             _logger.LogInformation("We received {@weather}", weather);
         }
+
+        [HttpPut]
+        public void Put(int number)
+        {
+            try
+            {
+                throw new Exception("A custom exception message");
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error Number = {number}", number);
+            }
+        }
     }
 }
