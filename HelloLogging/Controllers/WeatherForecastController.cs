@@ -59,14 +59,7 @@ namespace HelloLogging.Controllers
         [HttpPut]
         public void Put(int number)
         {
-            try
-            {
-                throw new Exception("A custom exception message");
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex, "Error Number = {number}", number);
-            }
+            throw new Exception("A custom exception message");
         }
     }
 }
