@@ -57,8 +57,6 @@ namespace HelloLogging
 
             app.UseHttpsRedirection();
 
-            app.UseMiddleware<RequestResponseLoggingMiddleware>();
-
             app.UseRouting();
 
             app.UseAuthorization();

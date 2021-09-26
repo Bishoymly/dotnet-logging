@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
 using Serilog;
-using Serilog.Events;
+using Serilog.Sinks.Elasticsearch;
 
 namespace HelloLogging
 {
@@ -14,8 +14,15 @@ namespace HelloLogging
         public static int Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-            .WriteTo.Console()
-            .CreateBootstrapLogger();
+                .MinimumLevel.Information()
+                .MinimumLevel.Override("Microsoft.AspNetCore", Serilog.Events.LogEventLevel.Warning)
+                .WriteTo.Console()
+                .WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                {
+                    AutoRegisterTemplate = true,
+                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv6
+                })
+                .CreateLogger();
 
             try
             {
@@ -36,12 +43,10 @@ namespace HelloLogging
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .UseSerilog((context, services, configuration) => configuration
-                    .ReadFrom.Configuration(context.Configuration)
-                    .ReadFrom.Services(services))
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
+            .UseSerilog()
+            .ConfigureWebHostDefaults(webBuilder =>
+            {
+                webBuilder.UseStartup<Startup>();
+            });
     }
 }
